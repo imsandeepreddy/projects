@@ -1,0 +1,14 @@
+---
+- name: Provision EC2 Instance
+  hosts: localhost
+  tasks:
+    - name: Provision EC2 instance
+      aws_ec2:
+        instance_type: t2.micro
+        image_id: ami-04e5276ebb8451442
+        key_name: my-key
+        state: present
+      register: ec2_result
+
+    - debug:
+        var: ec2_result

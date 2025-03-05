@@ -1,0 +1,21 @@
+---
+- name: Authenticate
+  include_tasks: authenticate.yml
+
+- name: Validate Device
+  include_tasks: validate_device.yml
+
+- name: Validate Image
+  include_tasks: validate_image.yml
+
+- name: Perform Pre Checks
+  include_tasks: pre_checks_commands.yml
+
+- name: Upgrade Software
+  include_tasks: upgrade_software.yml
+  
+- name: Perform Post Checks
+  include_tasks: post_checks_commands.yml
+
+- name: Cleanup
+  include_tasks: cleanup.yml

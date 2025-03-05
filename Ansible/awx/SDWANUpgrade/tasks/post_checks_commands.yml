@@ -1,0 +1,18 @@
+---
+- name: Execute commands on the device
+  cisco.ios.ios_command:
+    commands: "{{ commands }}"
+  register: command_output
+  delegate_to: "{{ sdwan_device_ip }}"
+
+- name: Write command outputs to post-check log file
+  copy:
+    content: |
+      {% for i in range(commands | length) %}
+      Command:
+      {{ commands[i] }}
+      Result:
+      {{ command_output.stdout[i] }}
+      ####################################
+      {% endfor %}
+    dest: "./Logs/{{ logsFolder }}/{{ post_check_commands_log }}"

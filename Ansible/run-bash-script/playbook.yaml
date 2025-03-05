@@ -1,0 +1,21 @@
+---
+- name: Get System Information
+  hosts: all
+  tasks:
+    - name: Copy log file
+      ansible.builtin.copy:
+        src: /root/ansible-custom-modules/file.log
+        dest: /root/file.log
+    - name: Copy sh file
+      ansible.builtin.copy:
+        src: /root/ansible-custom-modules/library/api-success-counter.sh
+        dest: /root/api-success-counter.sh
+        owner: root
+        group: root
+        mode: '0755' 
+    - name: Fetch System Information
+      shell: ./api-success-counter.sh
+      register: counter
+
+    - debug:
+        var: counter.stdout

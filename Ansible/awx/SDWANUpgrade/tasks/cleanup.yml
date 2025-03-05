@@ -1,0 +1,25 @@
+---
+- name: Destroy vManage session
+  uri:
+    url: "https://{{ vmanage_host }}/logout"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Cookie: "JSESSIONID={{ jsessionid }}"
+      X-XSRF-TOKEN: "{{ jtoken }}"
+    validate_certs: false
+  register: logout_response
+  ignore_errors: true
+
+- name: Check logout responsesh
+  debug:
+    var: logout_response
+
+- name: Compare Precheck and Postcheck command outputs
+  command: diff "./Logs/{{ logsFolder }}/{{ pre_check_commands_log }}" "./Logs/{{ logsFolder }}/{{ post_check_commands_log }}"
+  register: diff_output
+  ignore_errors: true
+
+- name: Print the differences
+  debug:
+    msg: "{{ diff_output.stdout }}"

@@ -1,0 +1,64 @@
+---
+- name: Authenticate to vManage
+  block:
+    - name: Call to authenticate the credentials for vManage
+      ansible.builtin.uri:
+        url: "https://{{ vmanage_host }}/j_security_check"
+        method: POST
+        body_format: form-urlencoded
+        body:
+          j_username: "{{ vmanage_username }}"
+          j_password: "{{ vmanage_password }}"
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        validate_certs: false
+      register: auth_response
+
+    - name: Validate authentication response
+      ansible.builtin.fail:
+        msg: "Authentication failed. Please check credentials."
+      when: auth_response.status != 200
+
+    - name: Set jsessionid fact
+      ansible.builtin.set_fact:
+        jsessionid: "{{ auth_response.cookies['JSESSIONID'] }}"
+
+    - name: Print jsessionid
+      ansible.builtin.debug:
+        var: jsessionid
+
+  rescue:
+    - name: Authentication failure cleanup
+      ansible.builtin.debug:
+        msg: "Failed to authenticate to vManage. Ensure credentials and vManage server are correct."
+
+- name: Get client token
+  block:
+    - name: Request client token
+      ansible.builtin.uri:
+        url: "https://{{ vmanage_host }}/dataservice/client/token"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          Cookie: "JSESSIONID={{ jsessionid }}"
+        validate_certs: false
+        return_content: yes
+      register: client_token_response
+
+    - name: Validate client token response
+      ansible.builtin.fail:
+        msg: "Failed to obtain client token."
+      when: client_token_response.status != 200
+
+    - name: Set client token fact
+      ansible.builtin.set_fact:
+        jtoken: "{{ client_token_response.content }}"
+
+    - name: Print client token
+      ansible.builtin.debug:
+        var: jtoken
+
+  rescue:
+    - name: Client token failure cleanup
+      ansible.builtin.debug:
+        msg: "Failed to retrieve client token. Ensure session is valid and server is reachable."

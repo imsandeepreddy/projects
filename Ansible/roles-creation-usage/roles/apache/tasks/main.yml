@@ -1,0 +1,26 @@
+- name: Update package repositories
+  apt:
+    update_cache: yes
+
+- name: Install Apache HTTP Server Package
+  apt:
+    name: apache2
+    state: present
+
+- name: Copy Apache HTTP Server configuration file
+  copy:
+    src: /root/roles/apache/files/httpd.conf
+    dest: /etc/apache2/apache2.conf
+
+- name: Copy index.html file
+  copy:
+    src: /root/roles/apache/files/index.html
+    dest: /var/www/html/index.html
+  notify:
+    - restart apache
+
+- name: Start and Enable Apache HTTP Server service
+  service:
+    name: apache2
+    state: started
+    enabled: yes

@@ -1,0 +1,86 @@
+---
+- name: Initiate software upgrade on SD-WAN device
+  block:
+    - name: Trigger software upgrade
+      ansible.builtin.uri:
+        url: "https://{{ vmanage_host }}/dataservice/device/action/install"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+          Cookie: "JSESSIONID={{ jsessionid }}"
+          X-XSRF-TOKEN: "{{ jtoken }}"
+        validate_certs: false
+        return_content: yes
+        body_format: json
+        body: >
+          {  
+            "action":"install",
+            "input":{  
+              "vEdgeVPN":0,
+              "vSmartVPN":0,
+              "version":"{{ image_full_version }}",
+              "versionType":"vmanage",
+              "reboot":false,
+              "sync":true
+            },
+            "devices":[
+              {  
+                "deviceIP":"{{ sdwan_device_ip }}",
+                "deviceId":"{{ sdwan_device_uuid }}"
+              }
+            ],
+            "deviceType":"vedge"
+          }
+      register: upgrade_response
+
+    - name: Validate upgrade initiation response
+      ansible.builtin.fail:
+        msg: "Failed to initiate software upgrade. Response: {{ upgrade_response }}"
+      when: upgrade_response.status != 200
+
+    - name: Print upgrade initiation response
+      ansible.builtin.debug:
+        var: upgrade_response
+
+    - name: Set task ID fact
+      ansible.builtin.set_fact:
+        task_id: "{{ upgrade_response.json['id'] }}"
+
+    - name: Print task ID
+      ansible.builtin.debug:
+        var: task_id
+
+  rescue:
+    - name: Software upgrade initiation failure cleanup
+      ansible.builtin.debug:
+        msg: "Failed to initiate software upgrade. Ensure the device and version details are correct."
+
+- name: Monitor software upgrade status
+  block:
+    - name: Check upgrade status
+      ansible.builtin.uri:
+        url: "https://{{ vmanage_host }}/dataservice/device/action/status/{{ task_id }}"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          Cookie: "JSESSIONID={{ jsessionid }}"
+          X-XSRF-TOKEN: "{{ jtoken }}"
+        validate_certs: false
+      register: status_response
+      until: status_response.json.summary.status == "done"
+      retries: 20
+      delay: 10
+
+    - name: Validate upgrade status response
+      ansible.builtin.fail:
+        msg: "Software upgrade did not complete successfully. Response: {{ status_response }}"
+      when: status_response.json.summary.status != "done"
+
+    - name: Print upgrade status
+      ansible.builtin.debug:
+        var: status_response
+
+  rescue:
+    - name: Upgrade status monitoring failure cleanup
+      ansible.builtin.debug:
+        msg: "Failed to monitor software upgrade status. Ensure the device is reachable and the upgrade process is running."

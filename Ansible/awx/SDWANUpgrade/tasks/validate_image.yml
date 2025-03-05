@@ -1,0 +1,49 @@
+---
+- name: Validate the os image presence in vManage
+  block:
+    - name: Request available images
+      ansible.builtin.uri:
+        url: "https://{{ vmanage_host }}/dataservice/device/action/software"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          Cookie: "JSESSIONID={{ jsessionid }}"
+          X-XSRF-TOKEN: "{{ jtoken }}"
+        validate_certs: false
+      register: images_response
+
+    - name: Validate images response
+      ansible.builtin.fail:
+        msg: "Failed to retrieve available images."
+      when: images_response.status != 200
+
+    - name: Display available images
+      ansible.builtin.debug:
+        var: images_response
+
+    - name: Check if the target image version is available
+      ansible.builtin.set_fact:
+        target_image_info: "{{ images_response.json.data | selectattr('cwVersion', 'equalto', target_image_version) | list | first }}"
+      when: images_response.json.data | selectattr('cwVersion', 'equalto', target_image_version) | list | length > 0
+
+    - name: Fail if the target image version is not available
+      ansible.builtin.fail:
+        msg: "Target image version {{ target_image_version }} is not available in vManage."
+      when: target_image_info is not defined
+
+    - name: Print target image info
+      ansible.builtin.debug:
+        var: target_image_info
+    
+    - name: Set target image full version
+      ansible.builtin.set_fact:
+        image_full_version: "{{ target_image_info.versionName }}"
+
+    - name: Print target image full version
+      ansible.builtin.debug:
+        var: image_full_version
+
+  rescue:
+    - name: Image list retrieval failure cleanup
+      ansible.builtin.debug:
+        msg: "Failed to retrieve image list. Ensure the session and server are working correctly."

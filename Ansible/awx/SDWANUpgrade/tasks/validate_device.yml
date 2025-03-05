@@ -1,0 +1,44 @@
+---
+- name: Validate the device presence in vManage
+  block:
+    - name: Get list of devices
+      uri:
+        url: "https://{{ vmanage_host }}/dataservice/device"
+        method: GET
+        headers:
+          Content-Type: "application/json"
+          Cookie: "JSESSIONID={{ jsessionid }}"
+          X-XSRF-TOKEN: "{{ jtoken }}"
+        validate_certs: false
+      register: devices_list_response
+
+    - name: Display all the available devices
+      debug:
+        var: devices_list_response
+
+    - name: Find device by name
+      set_fact:
+        target_device: "{{ item }}"
+      loop: "{{ devices_list_response.json.data }}"
+      when: item.deviceId == sdwan_device_ip
+
+    - name: Fail if device not found
+      fail:
+        msg: "Device {{ sdwan_device_ip }} not found!"
+      when: target_device is not defined
+
+    - name: Display target device information
+      debug:
+        var: target_device
+
+    - name: Set device uuid
+      set_fact:
+        sdwan_device_uuid: "{{ target_device.uuid }}"
+
+    - name: Display target device uuid
+      debug:
+        var: sdwan_device_uuid
+  rescue:
+    - name: Device list retrieval failure cleanup
+      debug:
+        msg: "Failed to retrieve device list. Ensure the session and server are working correctly."

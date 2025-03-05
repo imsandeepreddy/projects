@@ -1,0 +1,40 @@
+---
+- name: Gather device facts
+  cisco.ios.ios_facts:
+  register: device_facts
+  delegate_to: "{{ sdwan_device_ip }}"
+
+- name: Display device facts
+  debug:
+    var: device_facts
+
+- name: Gather current date
+  command: date +"%Y-%m-%d_%H-%M-%S"
+  register: current_date
+
+- name: Set Logs sub folder
+  ansible.builtin.set_fact:
+    logsFolder: "Logs-{{ current_date.stdout }}"
+
+- name: Create Logs directory
+  file:
+    path: "./Logs/{{ logsFolder }}"
+    state: directory
+
+- name: Execute commands on the device
+  cisco.ios.ios_command:
+    commands: "{{ commands }}"
+  register: command_output
+  delegate_to: "{{ sdwan_device_ip }}"
+
+- name: Write command outputs to pre-check log file
+  copy:
+    content: |
+      {% for i in range(commands | length) %}
+      Command:
+      {{ commands[i] }}
+      Result:
+      {{ command_output.stdout[i] }}
+      ####################################
+      {% endfor %}
+    dest: "./Logs/{{ logsFolder }}/{{ pre_check_commands_log }}"
