@@ -36,10 +36,7 @@
       <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
     </a>
   </div>
----
 
 ## 📄 Resume  
 
 Check out my [Resume](https://github.com/imsandeepreddy/imsandeepreddy.github.io/resume) for more details about my professional experience.
-
----
