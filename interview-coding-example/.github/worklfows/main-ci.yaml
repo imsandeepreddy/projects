@@ -1,0 +1,70 @@
+name: Simple CI
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  - name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set variables
+        id: vars
+        run: |
+          # Get branch name and short hash
+          BRANCH=${GITHUB_REF_NAME}
+          SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-5)
+
+          # save output for use in another steps
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "sha_short=$SHA_SHORT" >> $GITHUB_OUTPUT
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build docker image and push to docker hub
+        uses: docker/build-push-action@v6
+        with:
+          context: ./result
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/result:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+
+#------------------- Using reusable template ------------------------------------#
+name: CI using reusable actions template
+on:
+  push:
+    branches: ["main"]
+jobs:
+  # Should be mentioned directly under jobs
+  - name: Build
+    uses: my-org/.github/workflows/reusable-template.yaml@main
+
+#------------------- Using composite template ------------------------------------#
+name: CI using composite template
+on:
+  push:
+    branches: ["main"]
+jobs:
+  - name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set variables
+        id: vars
+        run: |
+          # Get branch name and short hash
+          BRANCH=${GITHUB_REF_NAME}
+          SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-5)
+
+          # save output for use in another steps
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "sha_short=$SHA_SHORT" >> $GITHUB_OUTPUT
+      - name: Docker build and push (Composite template)
+        uses: ./github/workflows/composite-template # mention direct folder in which actions.yml is present

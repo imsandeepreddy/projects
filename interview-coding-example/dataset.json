@@ -1,0 +1,14 @@
+[
+  {
+    "task": "Parse an AWS CloudFormation template to extract all S3 bucket logical IDs",
+    "format": "regex"
+  },
+  {
+    "task": "Create a JSON policy document that allows an IAM user to read objects from a specific S3 bucket",
+    "format": "json"
+  },
+  {
+    "task": "Write a Python function that validates if an AWS EC2 instance ID follows the correct format (i-followed by 17 hexadecimal characters)",
+    "format": "python"
+  }
+]

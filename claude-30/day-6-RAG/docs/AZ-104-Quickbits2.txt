@@ -1,0 +1,116 @@
+Attendance:
+https://rms-new.netlify.app/third_party?batch_header=234002
+Course material:
+https://www.mykoenig.com/
+234002
+Labs:
+https://gsi.learnondemand.net/
+
+Test3 - All questions covered
+Test4 - All questions covered
+
+Access:
+- Microsoft.Network/networkInterfaces/* grants users permissions to manage network interfaces, including the ability to set static IP addresses on the network interface associated with a virtual machine.
+- The Network Contributor role at the resource group (RG1) level ensures Admin1 has the necessary permissions to manage network resources across RG1, including both the load balancer and the backend pool resources
+- Network Contributor on LB2 role provides sufficient permissions to configure and manage health probes on the specific load balancer.
+- Modifying NAT rules on a load balancer requires the Network Contributor or Load Balancer Contributor role.
+- Azure Firewall can connect to a virtual network within the same region and resource group.
+- To assign an administrative role, such as the User Administrator role, to AdminUser1, you need to navigate to the Directory role blade in the user account properties. From there, you can modify the directory role and assign the appropriate administrative role.
+
+Administration:
+- Azure Monitor Network Insights provides a comprehensive view of your network’s health and performance. It includes detailed metrics, visualizations, and insights into the network topology, making it ideal for monitoring. 
+- Azure Policy definitions can be assigned at any level in the Azure hierarchy, including the tenant root group, management groups, subscriptions,  resource groups, and individual resource.
+- Azure plociy exclusions are applicable to management groups, subscriptions, resource groups, and individual resources only but not Root tenant.
+- To collect IIS logs from each virtual machine and store them in a Log Analytics workspace, you must configure Diagnostic settings on each virtual machine to enable and route IIS log data appropriately.
+- Azure budgets are a monitoring and alerting tool only. They do not enforce or take automatic action such as shutting down resources.
+- When you move a virtual machine (VM1) to another subscription, all its associated dependent resources must be moved as well. This includes the OS disk (Disk1), the network interface (NetInt1), and the virtual network (VNet1).
+- Locks can be applied at the subscription, resource group, and resource (such as a virtual machine) levels to prevent accidental deletion or modification.
+- Tags can be applied to subscriptions (Sub1), resource groups (RG1), and resources (such as VM1) in Azure. Tags cannot be applied to management groups (MG1) or the Tenant Root Group.
+- RBAC(Access control) - IAM - can be set for App service managed identity, this for long term access and without tokens. RBAC does not support expiry.
+- IAM is more managable for setting role to user to read blob data instead of SAS.
+- SAS token can be used by App service with expiry.
+- Update domains in an Availability Set ensure that not all virtual machines are rebooted at the same time during planned maintenance events, such as OS patching or Azure platform updates. By placing VM1 and VM2 in two separate update domains, Azure ensures that only one VM is rebooted at a time, keeping App1 available during maintenance.
+- fault domains deal with unplanned hardware failures, not planned maintenance. While fault domains enhance resilience to physical failures, they do not ensure availability during platform maintenance activities.
+
+Entra:
+- Global Administrator and Authentication Policy Admin roles can configure SSPR at Mircosoft Entra.
+- SSPR can be enabled for security groups and Microsoft 365 groups but not Mail-enabled security group.
+- Microsoft Entra ID P2 licenses can be assigned Microsoft 365 groups, security groups and Mail-enabled security group, but they must be security-enabled.
+- Microsoft Entra ID P2 licenses cannot be assigned to Mail-Enabled security group.
+- Microsoft Entra ID is a global service that is accessible only via public IP addresses. 
+
+Analytics:
+
+
+Backup:
+- Azure App Service, you can exclude specific files or folders from a backup by creating a _backup.filter file in the root directory of the app.
+- VM2 is getting backed up to RSV1, to change this to backup to RSV2, first from the RSV1 blade, click Backup items and stop the VM2 backup because an Azure virtual machine can only be backed up to one Recovery Services vault at a time. To back up VM2 to a different vault (RSV2), you must first stop the existing backup in RSV1. Once the backup is stopped and the backup data is removed, you can reconfigure the backup for VM2 in RSV2.
+- VM1 is backed up daily by Azure backup without using the Azure Backup agent. You need to restore the latest backup of VM1.
+You can perform a file recovery of VM1 to - any windows computer that has internet connectivity
+You can restore the backup to - VM1 or any new azure VM
+- VNET1 - EASTUS, VNET2 - WESTUS, VM is present in Subnet2 of VNET1 when performing a test failover in Azure Site Recovery from VNET1 to VNET2 and no matching subnet name exists in VNET2, the test virtual machine is automatically connected to the first subnet in alphabetical order.
+- In order to restore a backup from the Recovery Services vault to a different virtual machine (in this case, VM2), you need to have the Microsoft Azure Recovery Services (MARS) Agent installed on the destination VM. This agent enables the VM to communicate with the Recovery Services vault, allowing it to access and restore backups stored in Azure.
+
+Compute:
+- To ensure that you can push and pull signed container images in ContReg1, you need to enable content trust.
+- In a proximity placement group, all resources are logically grouped to minimize latency by ensuring they are located within the same data center. Proximity placement groups are specific to a region.
+- To create a staging slot for an Azure App Service plan, it must be in the Standard, Premium, or higher pricing tier.
+- Changing the size of a virtual machine(From D4s v3 to D8s v3) in Azure requires it to be deallocated and then re-provisioned, which causes downtime.
+- Desired State Configuration (DSC) extension allows you to define a desired state configuration for virtual machines in a scale set. This configuration can include installing and configuring software like NGINX on all virtual machines automatically after deployment.
+- The Publish-AzVMDscConfiguration cmdlet is used to upload and publish a DSC configuration script to an Azure storage account. This script can then be used by the DSC extension to ensure NGINX is installed and configured on the virtual machines in the scale set.
+- Azure App Service Autoscale is not supported in the Basic (B1) pricing tier. While Basic plans support manual scale-out (up to 3 instances), they do not support rule-based scaling.
+- Standard (S1) and Premium v3 plans do support autoscale, allowing automatic instance management based on defined rules and schedules.
+- Azure App Service supports zone redundancy only on the Premium v2 and Premium v3 pricing tiers.
+- For a Standard SKU load balancer, all virtual machines in the backend pool must be within the same region and connected to the same virtual network (VNET) as the load balancer itself. Additionally, they must either have a Standard SKU public IP address or no public IP address at all.
+- Basic SKU load balancer requires that all network interfaces (NICs) connected to it be part of the same availability set.
+- The load balancer will distribute traffic only to VMs that pass the health probe check, so the presence of Probe1.htm ensures VMs as healthy and load balancing between the two VMs.
+- WebApp1 requires a .NET 8 (LTS) runtime stack, which is supported on both Windows and Linux platforms.
+- In Azure App Service, setting the retention to 0 means backups are retained indefinitely unless manually deleted. 
+- In App servie, backup configuration applies only to the production slot not the test slot, unless specifically configured.
+
+Network:
+- Azure Bastion allows connections to virtual machines within the same virtual network or peered virtual networks.
+Eg: VNet1 is peered with VNet2, VNet2 is peered with VNet3. Bastion created in VNet1 will allow connections to all VMs in VNet1 and VNet2 but not VNet3
+- NICs must be created in the same region as the virtual network (VNet) they are associated with.
+- If a VPN gateway exists in VNET1, VNET1 peered with VNET2 with gateway transit disabled, VNET1 will still be able to connect to on-premises, but VNET2 will not be able to connect to on-premises through VNET1's gateway.
+- Azure Bastion(both Basic and Standard SKUs) requires a Standard Public IP address, Additionally, the IP address must be IPv4, have a Regional tier, and use a Static assignment.
+- AzureBastionSubnet for Azure Bastion requires a subnet prefix of at least /26 to function properly.
+- Win 11 device - device1 with az cli, to rdp into azure VM using bastion host, first bastion host should be standard SKU and Native client support should be enabled and then from device1 cli run "az network bastion rdp"
+- Forward DNS resolution is only supported across virtual networks that are linked to the private DNS zone as resolution virtual networks. In this setup, VNet2(contains VM9) is linked to the adatum.com private DNS zone, but VNet1 is not linked to this zone nor is it peered with VNet2. Since VNet1 is not configured as a resolution virtual network, VM5(VNet1) cannot resolve the domain name VM9.adatum.com.
+- VM2’s private IP address (10.1.0.5) will be automatically registered in the adatum.com(private dns zone with automation registration set for vnet1) since it is in vnet1, despite its DNS suffix being set to Contoso.com.
+- To enable connection between users to VMs in VNet1 using P2S VPN connection
+Create a new subnet in VNet1 named the GatewaySubnet 
+Deploy a VPN gateway in VNet1.
+Configure an IP address pool. This pool assigns IP addresses to users who connect through the P2S VPN, ensuring they can connect to resources within VNet1.
+- To ensure that records created in the contoso.com Azure DNS public zone are resolvable from the internet, you need to update the NS (Name Server) records in your DNS domain registrar. These records should point to the Azure DNS name servers associated with the contoso.com zone in Azure. This change directs external DNS queries for contoso.com to Azure DNS, allowing them to be resolved by the public Azure DNS servers.
+- Azure Bastion tunnels RDP sessions over port 443, eliminating the need to open port 3389 in the NSG. Inbound rule to the NSG for port 443 is enough.
+- AzureCloud service tag as the Destination in your NSG rule. This ensures that traffic specifically destined for the Azure portal is denied without impacting other internet traffic.
+- Standard SKU load balancer supports advanced features like HA Ports, Floating IP, and availability zones.
+-IP flow allows you to test whether traffic is allowed to or from a virtual machine based on NSG (Network Security Group) rules. It specifically helps in identifying whether a particular port (like 33000) is blocked or allowed, which is essential for troubleshooting connectivity between VMs.
+- to connect VNet1 in Subscription1 to VNet2 in Subscription2, you need to set up VNet-to-VNet connectivity across different subscriptions and tenants. The recommended approach for achieving this connection is to provision virtual network gateways in each virtual network and establish a VPN connection between them. This approach supports cross-subscription and cross-tenant connections.
+
+Connection troubleshoot helps diagnose issues with connectivity between two endpoints. It checks DNS resolution, network latency, and whether TCP connections (like on port 33000) can be established, making it ideal for this scenario involving cross-region VM communication.
+- When a peering connection is in a Disconnected state, you must delete the existing peering first in order to modify the address space. Address spaces cannot be modified once peering is established.
+- Connection troubleshoot is specifically designed to validate outbound connectivity from an Azure virtual machine (VM) to an external host. 
+- IP flow verify - Identify a security rule that prevents a network packet from reaching an Azure virtual machine.
+- Azure Monitor Network Insights relies on NSG flow logs to analyze and detect suspicious network traffic.
+- Inbound NAT rule allows you to direct specific traffic, such as RDP, to a particular virtual machine (VM3 in this case) behind the load balancer. By setting up an inbound NAT rule for port 3389 (RDP), you ensure that all RDP connections go directly to VM3 instead of balancing across all VMs. 
+
+Storage:
+- In a storage account, if you want one of the blobs to use different key for encryption first "Create an encryption scope" and then assign this scope to specific blob.
+- azcopy copy D:\folder1 https://contosodata.blob.core.windows.net/public --recursive is the correct answer because the azcopy copy command is used to upload files from an on-premises folder to an Azure Storage container. The --recursive option ensures that all files within D:\Folder1 are copied to the destination container in Azure.
+- The net use command relies on the SMB (Server Message Block) protocol, which only supports authentication using the Azure Storage account key for access to Azure File Shares. The SAS token cannot be used for authentication in this context, and attempting to use it will result in an error indicating invalid credentials.
+- Azure Key Vault supports only RSA keys for customer-managed storage account encryption and max bit length is 4096.
+- SMB (Server Message Block) protocol, which is used to access Azure file shares from Windows client, operates over port 445. Windows clients need access to port 445 to map a drive to the Azure file share.
+- Azure file provides a fully managed SMB file share that can be mounted by Azure container instances as persistent storage. This is essential for scenarios like running Microsoft SQL Server in a container, where data needs to persist across container restarts. However, it is important to note that volume mounting, including Azure Files, is currently only supported for Linux-based Azure container instances. 
+- StorageV2 with LRS can be converted into ZRS but not BlobStorage(not eligible for ZRS replication)
+- StorageV2 with RA-GRS can be converted into ZRS by first changing it to LRS and then to ZRS.
+- Signing key refers to storage account access key, not a SAS token. Storage account keys act like root-level credentials and grant unrestricted full access to all services and data types in the storage account
+- StorageV2, BlobStorage, and BlockBlobStorage—support lifecycle management policies for block blobs and append blobs.
+- Only storage accounts configured with LRS (Locally Redundant Storage), GRS (Geo-Redundant Storage), or RA-GRS (Read-Access Geo-Redundant Storage) support moving blob data to the Archive access tier. if any has zone, it wont support archive.
+- AzCopy supports copying data to Blob storage and File storage, but not Table storage or Queue storage. AzCopy is specifically designed for transferring blob and file data efficiently within and across Azure storage accounts.
+- Role assignment conditions in Azure can enforce granular access control based on blob index tags.
+- Hot: No minimum retention period; early deletion penalty does not apply.
+- Cool: 30 days minimum retention period.
+- Cold: 90 days minimum retention period.
+- Archive: 180 days minimum retention period.

@@ -1,0 +1,117 @@
+Attendance:
+https://rms-new.netlify.app/third_party?batch_header=234002
+Course material:
+https://www.mykoenig.com/
+234002
+Labs:
+https://gsi.learnondemand.net/
+
+Test1 - All questions
+Test2 - All questions
+
+Access:
+- Private DNS Zone Contributor role grants all the permissions required to link a private DNS zone (Zone1) to a virtual network (VNet1).
+- The Website Contributor role provides the necessary permissions to manage the Azure app service web app, including deploying content, without giving the developers excessive privileges such as those granted by the Owner role. 
+- "Virtual Machine Contributor" role alone does not grant login permissions. The "Virtual Machine User Login" role is required to allow the user to sign in to the virtual machine
+- "Virtual Machine Contributor" role allows users to manage virtual machines and attached disks but does not grant permissions to manage disk snapshots. Managing disk snapshots requires specific permissions, such as those granted by the "Disk Snapshot Contributor" role
+- Storage Account Key Operator Service Role or Storage Account Contributor role - To enable a user to list and regenerate storage account keys.
+- Storage Account Contributor role provides the necessary permissions to manage storage accounts, including listing and regenerating storage account keys.
+- Security Admin role is focused on managing security-related policies and configurations but does not grant the ability to provide access to a users.
+- Permissions like "Microsoft.Compute/virtualMachines/login/action" or "Microsoft.Compute/virtualMachines/loginAsAdmin/action" are categorized as data plane operations. These permissions determine access to the operational level of the virtual machine, such as signing in or interacting with its data, and should therefore be placed in the dataActions section of custom role.
+- "Modify the Public network access settings" to allow access to storage1 from selected networks and your home office while minimizing administrative effort.
+- Security Administrator/Billing Administrator  which falls under the category of administrative roles in Azure AD. By default, Azure applies a two-gate password reset policy for all administrator accounts. This two-gate policy requires two pieces of authentication data, such as an email address, authenticator app, or phone number, and does not permit the use of security questions for administrators.
+
+Administration:
+- adding a tag to a resource, creating a resource group etc are considered as administrative operation in Azure.
+- Azure Advisor provides personalized recommendations to optimize your Azure resources for cost, performance, security, and more. Specifically, it includes cost recommendations to help identify underutilized virtual machines that can be resized to a lower-cost SKU, thereby reducing unnecessary spend.
+- Monitor provides telemetry data and performance metrics, it doesn't offer built-in cost optimization recommendations.
+- Metrics shows raw performance counters and charts but doesn't interpret or recommend changes based on utilization.
+- Customer insights is related to customer data analytics (like Dynamics 365)
+
+Entra:
+- Global Admins do not have permissions to assign custom security attributes to Entra objects.
+- Custom security attributes in Microsoft Entra ID can only be assigned to users and service principals (enterprise applications), devices
+- Custom security attributes cannot be assigned to Microsoft 365 groups, only to Security Groups indirectly.
+- You need a Microsoft Entra ID P1 or P2 license to use custom security attributes. 
+- In a free Microsoft Entra ID tenant, you can only assign licenses to individual users like User1. Group-based licensing (for Group1 or Group2) requires a paid version of Microsoft Entra ID (such as P1 or P2).
+- In both free and paid versions of Entra, SSPR can be directly assigned only to a groups.
+- If Entra Connect syncs Group from AD DS, only Group will be moved to Microsoft Entra, Group members will be shown as Un synced.
+-  In Microsoft Entra ID, users can be deleted regardless of whether they have licenses assigned directly or through group membership. When a user is deleted, any licenses assigned to them will be freed for reassignment.
+- In Entra, Groups cannot be deleted if they have licences assigned to them.
+- Microsoft Entra group-based licensing does not support nested group inheritance.
+- If you create users with Microsoft 365 License and groups(Security group or  Microsoft 365) with dynamic assignment, users will become memebrs of Security group or  Microsoft 365 group irrespective of Microsoft 365 license. Licenses are only for accessing services and do not affect dynamic or assigned group memberships.
+- User1 is a member with no on-premises sync, and User3 is a guest user. This means their attributes—including JobTitle—can be modified directly in Microsoft Entra ID.
+- User2 is synchronized from on-premises Active Directory, so their attributes must be modified in the on-premises directory. Microsoft Entra ID does not allow attribute modification for synced users from the cloud interface.
+- The UsageLocation attribute is always stored and managed in Microsoft Entra ID, regardless of whether the user is cloud-only (User1 and User3) or synced from on-premises Active Directory (User2). This attribute is required for assigning Microsoft 365 licenses and can be directly edited from the Microsoft Entra portal or using PowerShell for all types of users
+- RG1 has Group1(Security Group) as Owner, adding , Group3(Microsoft 365) as a member of Group1 will not grant the Owner role to User3. This is because Microsoft Entra ID (Azure AD) does not support nested group evaluation for Microsoft 365 groups in role assignments.
+- Even though Group3 is a Microsoft 365 group, direct role assignments (not nested) are supported when the group is configured for role assignments with this setting(Microsoft Entra roles can be assigned to the group: Yes).
+
+Analytics:
+- Data Collection Rules (DCRs) use XPath expressions to filter Windows Event Logs at the ingestion level.
+- KQL is used for querying already collected data in Log Analytics.
+- The IT Service Management Connector (ITSM) allows you to integrate Azure Monitor with IT service management tools such as System Center Service Manager (SCSM). This connector enables alerts from Azure (e.g., when VM1's available memory drops below a threshold) to automatically generate incidents or alerts within Service Manager.
+- The valid destinations for a Data Collection Rule (DCR) in Azure Monitor include Log Analytics workspaces, Azure Table storage, Azure Blob storage, Azure Monitor metrics, and Event Hubs.
+- Azure Monitor Private Link Scope (AMPLS) allows you to create a private endpoint that enables secure communication between your virtual machines and Azure Monitor over the virtual network.
+
+Backup:
+- Azure Backup - Azure File Share - maximum frequency is six backups per day
+- Azure Backup - Azure Blobs storage - maximum frequency is one  backup per day
+- Azure Backup supports backing up individual disks.
+- Recovery Services vault is used to back up entire virtual machines
+- Azure App Service web app and Azure SQL Database have different built-in backup features and are not backed up directly using Azure Backup.
+- Azure Backup requires that the storage account used for diagnostic settings (like Azure Backup reports) be in the same region as the Recovery Services vault (Vault1). 
+- The region of the Log Analytics workspace does not need to match the location of the Recovery Services vault. 
+
+Compute:
+- App Service and Azure Container Instances - support both Windows-based and linux-based containers. 
+- Azure Container Apps only supports Linux-based containers only.
+- Redeploy moves the virtual machine to a new physical host within the same Azure region.
+- When you redeploy a VM: The OS and data disks are preserved, The VM is moved to a different host, The public IP (if static) and other configurations remain unchanged.
+- Desired State Configuration (DSC) requires the virtual machine to be in a running state to enable and configure it. 
+- When you move a resource like a web app to a different resource group, the region of the resource does not change—it stays in the same physical location unless explicitly redeployed.
+However, after the move, the policy assigned to the destination resource group (RG2) will now govern WebApp1. Since WebApp1 is now in RG2, Policy2 applies to it.
+- ACR(Azure Container Registry) Tasks are supported in all service tiers: Basic, Standard, and Premium.
+- Only the Premium tier of Azure Container Registry supports private endpoints.
+- Geo-replication in Azure Container Registry is only supported in the Premium SKU.
+- To enable ACR to use a dedicated data endpoint, you need to configure the following two settings:
+Properties: From this blade, you must first change the pricing plan from Standard to Premium.
+Networking: Once the dedicated data endpoint is enabled in the Properties, you can then disable public access and create a private endpoint.
+- To scale up VM1 in Availability Set, to a new virtual machine size, but the intended size is unavailable.you should first Deallocate VM.
+- "copy" property is used in ARM templates to define an array of resources or properties that need to be created multiple times.
+- copyIndex() function is used to generate a unique index for each iteration of the copy property in an ARM template. 
+
+Encryption:
+- VM with Windows Server 2022 and with a basic volume, which is compatible with Azure Disk Encryption.
+- VM with Red Hat Enterprise Linux with standard SSDs, which are supported by Azure Disk Encryption.
+- Ephemeral OS disks, Write Accelerator disks, dynamic volume, does not support Azure Disk Encryption.
+- PKCS#12 format, which is the standard and supported format for SSL/TLS certificates on Azure App Service.
+- Set-AzVMDiskEncryptionExtension and RSA key with a size of 4096 required by Azure Disk Encryption for encrypting virtual machines.
+- Encryption scopes in Azure are designed to apply to Blob storage, specifically to containers and individual blobs within a storage account. file shares, queues, and tables are not supported within encryption scopes.
+- There are no Azure-imposed barriers that prevent app1 from accessing Key Vaults located in different regions or resource groups. While it is generally recommended to use a Key Vault in the same region as the resource for performance and latency considerations.
+- When an Azure VM is in a Stopped (Deallocated) state, the vCPUs are not automatically "fetched" or released back into the general subscription quota pool. The quota is still reserved for the VM to ensure it can be restarted. To free up the vCPU quota from VM2, you must delete the VM and its associated resources. 
+- Stopped (Deallocated) state, you wont be billed but quota wont be released to be used by another VM.
+- Azure resource locks such as Read-only and Delete are designed to prevent deletion or modification of resources, but they do not block move operations.
+
+Network:
+- When adding a route to a routing table and specifying a next hop IP address, the correct next hop type is Virtual appliance.
+- To allow the virtual machines to access Vault1 (which is an Azure Key Vault resource) while keeping outbound internet access blocked, you should configure the NSG outbound rule to allow traffic only to the AzureKeyVault service tag
+-  VNet peering can enable communication between virtual networks in different regions and subscriptions.
+-  Azure Network Watcher's Connection Monitor requires that the source virtual machine and the Connection Monitor instance reside in the same Azure region.
+- By default, NSGs deny inbound traffic from the internet unless there is an explicit rule to allow it. 
+
+Storage:
+- Azure Storage accounts allow a maximum of five stored access policies per container. 
+- In Azure Blob Storage, you can create up to two immutable blob stored access policies per container. 
+- File shares can organize content using directories regardless of whether the storage account supports a hierarchical namespace.
+- Block blobs are designed to store large amounts of unstructured data, such as images or backups. Additionally, block blobs are more suitable for use cases where data needs to be frequently accessed, stored, or replaced (such as in a daily CSV file).
+- AppendBlob is generally used for log data where the need is to continuously append new data. It is not optimized for image storage or daily CSV storage.
+- PageBlob are typically used for storing virtual hard disks (VHDs) for Azure virtual machines, not for storing images or daily CSV files.
+- Azure Object Replication is a feature of Azure Blob Storage, and it works at the container level. 
+- General-purpose v2 storage accounts (StorageV2) and premium block blob storage accounts supports Azure Object Replication.
+- To ensure that inbound user traffic uses the Microsoft point-of-presence (POP) closest to the user’s location, you should configure the routing preference to use Microsoft network routing (also called "Microsoft edge network"). 
+- Azure supports Azure role assignment conditions for Blob Storage containers and Queue Storage. 
+- For a service endpoint policy to be applied to a subnet:
+The subnet must have a matching service endpoint (in this case, Microsoft.Storage).
+The subnet and the service endpoint policy must be in the same region.
+-  If no service endpoint policy is configured, the subnet can connect only to storage accounts that are in the same region and support the Microsoft.Storage service endpoint.
+

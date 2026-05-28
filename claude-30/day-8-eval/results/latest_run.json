@@ -1,0 +1,202 @@
+[
+  {
+    "id": "test_001",
+    "difficulty": "easy",
+    "response": "# Log Analysis\n\n## Issue Summary\n**Database connectivity failure** - The application cannot connect to PostgreSQL on port 5432.\n\n## Root Cause\nThe service listening on port 5432 is **unavailable or not responding**. This could be due to:\n\n1. **PostgreSQL service is down** (most likely)\n2. **Network/firewall blocking** access to port 5432\n3. **PostgreSQL crashed or hung**\n4. **Port binding issue** (different service on port 5432)\n5. **Host/DNS resolution problem**\n\n## Recommended Fixes\n\n### Immediate Actions\n```bash\n# 1. Check if PostgreSQL is running\nsystemctl status postgresql\n# or\ndocker ps | grep postgres\n\n# 2. Verify port 5432 is listening\nnetstat -tlnp | grep 5432\n# or\nss -tlnp | grep 5432\n\n# 3. Check connectivity\ntelnet localhost 5432\n# or\nnc -zv localhost 5432\n```\n\n### Remediation Steps\n1. **Restart PostgreSQL** if it's stopped:\n   ```bash\n   systemctl restart postgresql\n   ```\n\n2. **Check logs** for why the service stopped:\n   ```bash\n   tail -f /var/log/postgresql/postgresql.log\n   ```\n\n3. **Verify network connectivity** if remote database:\n   ```bash\n   ping <db-host>\n   traceroute <db-host>\n   ```\n\n4. **Check application config** for correct host/port/credentials\n\n## Monitoring\n- Set up alerts for database connection failures\n- Monitor PostgreSQL service health\n- Implement connection pool retry logic with exponential backoff",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 1.0,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "reasoning": "The response accurately identifies the PostgreSQL connectivity issue, systematically covers all possible root causes, provides concrete and immediately executable diagnostic commands, is clearly structured with actionable sections, and includes preventive monitoring recommendations.",
+      "overall": 5
+    }
+  },
+  {
+    "id": "test_002",
+    "difficulty": "easy",
+    "response": "# Log Analysis: OOMKilled Container\n\n## Root Cause\n**Memory exhaustion** - The container exceeded its allocated memory limit, resulting in an Out-Of-Memory (OOM) kill.\n\n### Timeline:\n- **09:11:44**: Warning threshold reached (94% memory usage)\n- **09:11:55**: Container killed by system (11 seconds later)\n\n---\n\n## Recommended Fixes\n\n### Immediate Actions:\n1. **Increase memory limits**\n   - Raise the container's memory allocation in your orchestration config (Docker, Kubernetes, etc.)\n   - Example for Kubernetes: `memory: 512Mi` \u2192 `memory: 1Gi`\n\n2. **Identify memory leak**\n   - Check application logs for memory-intensive operations\n   - Monitor heap size if running JVM/managed runtime\n   - Profile the application for memory leaks\n\n### Investigation Steps:\n- Review memory usage patterns before the spike\n- Check for unusual processes or queries running at that time\n- Verify if this correlates with specific workloads/peak traffic\n\n### Long-term Solutions:\n- **Auto-scaling**: Set up horizontal pod autoscaling for load distribution\n- **Resource optimization**: \n  - Review code for inefficient data structures\n  - Implement caching strategies\n  - Add connection pooling limits\n- **Monitoring**: Set up alerts before hitting 85% threshold\n- **Gradual testing**: Load test to establish appropriate memory baseline\n\n---\n\n**Priority**: \ud83d\udd34 **Critical** - Reoccurrence will cause service disruption",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.75,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The response correctly identifies memory exhaustion as the root cause with precise timeline correlation, provides concrete and prioritized fix recommendations spanning immediate/investigation/long-term actions, and presents information in clear, well-organized sections that DevOps teams can immediately act upon."
+    }
+  },
+  {
+    "id": "test_003",
+    "difficulty": "easy",
+    "response": "# Log Analysis: JWT Token Expiration\n\n## \ud83d\udd34 Root Cause\n**Expired JWT token** - The authentication token has exceeded its validity period and is no longer accepted by the auth middleware.\n\n---\n\n## \ud83d\udcca Issue Summary\n\n| Aspect | Details |\n|--------|---------|\n| **Error Type** | TokenExpired |\n| **HTTP Status** | 401 Unauthorized |\n| **Component** | Auth middleware |\n| **Timestamp** | 2024-01-15 10:05:12 |\n| **Impact** | Request rejected, user cannot authenticate |\n\n---\n\n## \u2705 Recommended Fixes\n\n### Immediate Actions (Client-side)\n1. **Request a new token** - Implement token refresh mechanism\n   ```\n   - Use refresh token to obtain new JWT\n   - Update stored token before retry\n   ```\n\n2. **Redirect to login** - Force user re-authentication\n   ```\n   - Clear expired token from storage\n   - Redirect to login page\n   ```\n\n### Long-term Solutions (Server-side)\n1. **Increase token expiration** (if security allows)\n   - Review current TTL settings\n   - Balance security vs user experience\n\n2. **Implement token refresh endpoint**\n   ```\n   POST /auth/refresh\n   - Accept refresh token\n   - Return new access token\n   ```\n\n3. **Add graceful expiration handling**\n   - Warn users 5 minutes before expiry\n   - Auto-refresh in background\n   - Implement sliding window expiration\n\n4. **Monitor token expiration patterns**\n   - Alert if spike in 401 errors\n   - Track average token lifetime vs TTL\n\n---\n\n## \ud83d\udd0d Questions to Investigate\n- Is this a single user or widespread issue?\n- Did token TTL settings recently change?\n- Are users experiencing repeated expirations?",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 1.0,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The assistant correctly identified the root cause (expired JWT token), provided comprehensive coverage of immediate and long-term solutions, offered concrete and implementable fixes with code examples, and presented the analysis in a clear, well-organized format with appropriate follow-up investigation questions."
+    }
+  },
+  {
+    "id": "test_004",
+    "difficulty": "easy",
+    "response": "# Log Analysis Report\n\n## Issue Summary\n**Disk space exhaustion** on the `/var/log` partition causing application I/O failures.\n\n---\n\n## Root Cause\n1. **Primary**: `/var/log` partition at 98% capacity\n2. **Trigger**: Log files filling disk faster than rotation/cleanup occurs\n3. **Result**: Application cannot write files \u2192 `No space left on device` error\n\n---\n\n## Recommended Fixes\n\n### Immediate Actions (Crisis Mode)\n```bash\n# 1. Find largest log files\ndu -sh /var/log/* | sort -rh | head -10\n\n# 2. Clear old/compressed logs safely\nfind /var/log -name \"*.gz\" -o -name \"*.1\" | xargs rm -f\n\n# 3. Truncate active logs (if safe for your app)\ntruncate -s 0 /var/log/application.log\n\n# 4. Verify space freed\ndf -h /var/log\n```\n\n### Long-term Solutions\n\n| Action | Priority | Impact |\n|--------|----------|--------|\n| **Increase partition size** | High | Permanent fix |\n| **Implement log rotation** | High | Prevents recurrence |\n| **Reduce log verbosity** | Medium | Lower log volume |\n| **Setup monitoring alerts** | High | Early warning |\n| **Archive old logs** | Medium | Free immediate space |\n\n### Logrotate Configuration Example\n```bash\n# /etc/logrotate.d/application\n/var/log/application.log {\n    daily\n    missingok\n    rotate 7\n    compress\n    delaycompress\n    notifempty\n    create 0640 appuser appgroup\n}\n```\n\n### Monitoring Alert\nSet threshold at **80% capacity** to trigger alerts before critical state.\n\n---\n\n**Next Step**: Run the immediate commands, then implement log rotation + disk expansion.",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.8,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The response correctly identifies disk exhaustion as the root cause, provides immediately executable bash commands for crisis mitigation, outlines comprehensive long-term solutions with a prioritized table, includes a concrete logrotate configuration example, and recommends proactive monitoring\u2014all presented in clear, well-organized sections that guide a DevOps engineer through both emergency and preventative actions."
+    }
+  },
+  {
+    "id": "test_005",
+    "difficulty": "medium",
+    "response": "# Log Analysis\n\n## Root Cause\n**Upstream service timeout** - The payment.com API failed to respond within the 30-second timeout window.\n\n## Key Observations\n\n| Aspect | Finding |\n|--------|---------|\n| **Service** | Payment gateway |\n| **Issue Type** | Timeout (30s threshold exceeded) |\n| **Impact** | Payment processing failures |\n| **Severity** | High - payment transactions blocked |\n\n## Likely Causes (in order of probability)\n\n1. **Payment service degradation** - payment.com experiencing latency or outage\n2. **Network latency** - slow route between your service and payment.com\n3. **Timeout threshold too aggressive** - 30s might be too short for normal operations\n4. **Resource exhaustion** - payment.com hitting capacity limits\n\n## Recommended Fixes\n\n### Immediate Actions\n- **Check payment.com status** - Verify their service health dashboard\n- **Monitor response times** - Add metrics to track payment API latency trends\n- **Review recent changes** - Check if network/config changes preceded this\n\n### Short-term Solutions\n```\n1. Implement exponential backoff + retry logic\n2. Increase timeout to 45-60s (if business context allows)\n3. Add circuit breaker pattern to fail fast\n4. Enable detailed request logging (headers, body size)\n```\n\n### Long-term Solutions\n- Set up health checks on payment.com endpoint\n- Establish SLA monitoring with payment provider\n- Consider fallback payment processor\n- Implement request queuing for resilience\n\n## Questions to Investigate\n- Is this a one-time spike or persistent issue?\n- What's the error rate? (% of failed transactions)\n- Any correlation with specific times/volumes?",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 1.0,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "reasoning": "The assistant accurately identified the root cause (upstream service timeout), covered all significant errors with comprehensive analysis, provided concrete and prioritized fix suggestions, and presented everything in a well-organized, easy-to-follow format with tables and code examples.",
+      "overall": 5
+    }
+  },
+  {
+    "id": "test_006",
+    "difficulty": "medium",
+    "response": "# Log Analysis\n\n## Root Cause\n**Missing required column in INSERT statement**\n\nThe application attempted to insert a record into the `profiles` table without providing a value for the `user_id` column, which has a NOT NULL constraint.\n\n### Details\n- **Table**: `profiles`\n- **Missing column**: `user_id` (NOT NULL)\n- **Issue**: INSERT statement only specifies `bio` column\n- **Constraint violation**: Database enforces NOT NULL on `user_id`\n\n---\n\n## Suggested Fixes\n\n### 1. **Code Fix (Primary)**\nUpdate the INSERT query to include the required `user_id`:\n\n```sql\n-- BEFORE (broken)\nINSERT INTO profiles (bio) VALUES ('hello')\n\n-- AFTER (fixed)\nINSERT INTO profiles (user_id, bio) VALUES (123, 'hello')\n```\n\n### 2. **Application Level**\nEnsure the user_id is obtained before inserting:\n```python\n# Example: Validate user_id exists before insert\nuser_id = get_current_user_id()  # Must not be None\nif user_id is None:\n    raise ValueError(\"user_id required\")\ninsert_profile(user_id, bio)\n```\n\n### 3. **Validation Layer**\nAdd input validation to catch missing required fields early:\n```python\ndef validate_profile_data(user_id, bio):\n    if not user_id:\n        raise ValueError(\"user_id is required\")\n    if not bio:\n        raise ValueError(\"bio is required\")\n```\n\n---\n\n## Prevention\n- Add API-level validation for required fields\n- Review database schema documentation during development\n- Use ORM frameworks that enforce schema validation\n- Add pre-deployment query testing",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.8,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The assistant correctly identified that the INSERT statement lacks the required user_id column, provided concrete SQL and Python fixes with clear examples, covered immediate remediation and long-term prevention strategies, and explained all aspects in a well-organized, easy-to-follow format."
+    }
+  },
+  {
+    "id": "test_007",
+    "difficulty": "medium",
+    "response": "# Log Analysis & Root Cause\n\n## Issue Summary\nThe file processing daemon failed to start due to an **IAM permission denial** when attempting to read a config file from S3.\n\n---\n\n## Root Cause\nThe IAM user `worker` lacks the `s3:GetObject` permission required to read `s3://app-data/config.json`.\n\n### Why it happened:\n- **Missing IAM policy** - The user's attached policies don't include S3 read permissions\n- **Insufficient scope** - Policy may exist but with wrong resource ARN or conditions\n- **Recent permission removal** - Policies may have been recently modified or revoked\n\n---\n\n## Recommended Fixes\n\n### **Option 1: Add S3 Read Policy (Recommended)**\nAttach this inline or managed policy to the `worker` user:\n\n```json\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\"\n      ],\n      \"Resource\": \"arn:aws:s3:::app-data/config.json\"\n    }\n  ]\n}\n```\n\n### **Option 2: Broader S3 Access**\nIf the daemon needs multiple objects in the bucket:\n\n```json\n{\n  \"Effect\": \"Allow\",\n  \"Action\": [\n    \"s3:GetObject\",\n    \"s3:ListBucket\"\n  ],\n  \"Resource\": [\n    \"arn:aws:s3:::app-data\",\n    \"arn:aws:s3:::app-data/*\"\n  ]\n}\n```\n\n---\n\n## Verification Steps\n1. **Confirm policy attachment**: `aws iam list-user-policies --user-name worker`\n2. **Test permissions**: `aws s3 cp s3://app-data/config.json . --profile worker`\n3. **Restart daemon** and verify logs show successful startup\n\n---\n\n## Prevention\n- Use **IAM roles** instead of user credentials (if on EC2/Lambda)\n- Implement **least privilege** principle\n- Enable **CloudTrail logging** to audit permission changes",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.8333333333333334,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The response accurately identifies the IAM permission issue, provides multiple concrete solution options with valid JSON policies, includes practical verification steps, and offers preventive measures\u2014all presented in clear, well-organized format."
+    }
+  },
+  {
+    "id": "test_008",
+    "difficulty": "medium",
+    "response": "# Log Analysis: DNS Resolution Failure\n\n## \ud83d\udd34 Root Cause\n**DNS resolution failure** for the internal microservice hostname `microservice-b.internal.local` is preventing traffic routing to the downstream service.\n\n## \ud83d\udcca Problem Chain\n```\nDNS lookup fails \n    \u2193\nService discovery breaks\n    \u2193\nTraffic routing fails\n    \u2193\nService unavailability\n```\n\n## \ud83d\udd0d Likely Causes (in order of probability)\n\n1. **DNS Server Issues**\n   - DNS service down or unresponsive\n   - CoreDNS/kube-dns pods crashed (if Kubernetes)\n\n2. **Network Connectivity**\n   - Network policy blocking DNS (port 53)\n   - Firewall rules preventing DNS queries\n\n3. **Service Registration**\n   - microservice-b not registered in service discovery\n   - Service definition missing or misconfigured\n\n4. **Configuration Issues**\n   - Incorrect DNS nameserver in pod/container\n   - Wrong domain suffix configuration\n\n## \u2705 Recommended Fixes\n\n### Immediate Actions\n```bash\n# 1. Test DNS resolution\nnslookup microservice-b.internal.local\ndig microservice-b.internal.local\n\n# 2. Check DNS service health\nkubectl get pods -n kube-system | grep dns\nkubectl logs -n kube-system deployment/coredns\n\n# 3. Verify service exists\nkubectl get svc microservice-b -n <namespace>\n```\n\n### Resolution Steps\n- **Verify DNS pod is running** and has sufficient resources\n- **Check network policies** aren't blocking port 53\n- **Confirm service registration** in your service mesh (Consul/Eureka)\n- **Review resolver configuration** (`/etc/resolv.conf` in container)\n- **Check service name spelling** and namespace\n\n## \ud83d\udccb Monitoring\nAdd alerts for:\n- DNS query failure rates\n- DNS service availability\n- Service registration changes",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 1.0,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "overall": 5,
+      "reasoning": "The response accurately identifies DNS resolution as the root cause, provides a comprehensive problem chain analysis, covers all significant error categories with prioritized troubleshooting steps, includes concrete bash commands for immediate investigation, and is well-structured with clear visual formatting that makes it easy to follow and implement."
+    }
+  },
+  {
+    "id": "test_009",
+    "difficulty": "hard",
+    "response": "# Log Analysis: Deadlock Detection\n\n## Root Cause: **Circular Lock Dependency (Deadlock)**\n\n### Event Timeline:\n1. **17:15:30** - Thread-42 locks Resource_A\n2. **17:15:31** - Thread-89 locks Resource_B\n3. **17:15:35** - Thread-42 tries to acquire Resource_B (already held by Thread-89) \u2192 **BLOCKED**\n4. **17:15:36** - Thread-89 tries to acquire Resource_A (already held by Thread-42) \u2192 **BLOCKED**\n5. **17:17:00** - Watchdog timeout triggers (105 seconds of deadlock)\n\n### Problem Visualization:\n```\nThread-42: Resource_A \u2192 [waiting for] \u2192 Resource_B (held by Thread-89)\nThread-89: Resource_B \u2192 [waiting for] \u2192 Resource_A (held by Thread-42)\n                           \u2191_______________|\n                        CIRCULAR DEPENDENCY\n```\n\n---\n\n## Recommended Fixes\n\n### 1. **Lock Ordering** (Primary Solution)\nEnforce consistent lock acquisition order across all threads:\n```java\n// WRONG - inconsistent order\nThread-42: lock(A) then lock(B)\nThread-89: lock(B) then lock(A)\n\n// CORRECT - always acquire in same order\nAll threads: lock(A) then lock(B)  // alphabetical or ID-based\n```\n\n### 2. **Timeout-Based Locking**\n```java\nif (!lock.tryLock(5, TimeUnit.SECONDS)) {\n    releaseAllLocks();  // Release all locks and retry\n    throw new LockTimeoutException();\n}\n```\n\n### 3. **Lock-Free Alternatives**\n- Replace explicit locks with `ConcurrentHashMap`, `AtomicReference`, or other concurrent collections\n- Use message queues instead of shared state\n\n### 4. **Deadlock Detection & Recovery**\n- Implement watchdog with automatic lock release on timeout (already present but needs recovery logic)\n- Add thread dumps to logs for analysis\n\n### 5. **Code Review Checklist**\n- [ ] Document lock acquisition order requirement\n- [ ] Add code comments showing expected order\n- [ ] Use static analysis tools (e.g., ThreadSafety analyzers)\n\n---\n\n## Immediate Action Required\nRestart the affected threads or services and deploy lock-ordering fix to prevent recurrence.",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.8,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 5,
+      "clarity": 5,
+      "reasoning": "The assistant accurately identified the classic circular deadlock condition, provided a complete timeline with clear visualization, offered multiple concrete solutions ranked by priority, and included implementation examples with a practical action plan.",
+      "overall": 5
+    }
+  },
+  {
+    "id": "test_010",
+    "difficulty": "hard",
+    "response": "# Log Analysis & Root Cause\n\n## Problem Summary\nThe application failed to start due to a **YAML parsing error** when encountering an unknown custom tag `!!custom_macro`.\n\n## Root Cause\nPyYAML encountered a YAML tag (`!!custom_macro`) in `config.yaml` that it doesn't have a constructor for. This is a **YAML deserialization issue** - the parser doesn't know how to instantiate objects with this custom tag.\n\n## Likely Causes\n1. **Custom YAML tag not registered** - The application uses custom YAML constructors that aren't initialized\n2. **Missing YAML parser setup** - Custom tag handlers weren't loaded before parsing config\n3. **Version mismatch** - Config file was created with a different application version that had custom tag support\n4. **Incomplete migration** - Config file references deprecated custom tags no longer supported in v2.1.0\n\n## Recommended Fixes\n\n### Immediate (Quick Fix)\n```yaml\n# Option 1: Remove/replace custom_macro in config.yaml\n# Before:\nmacro_config: !!custom_macro { name: value }\n\n# After:\nmacro_config: { name: value }  # Use standard YAML\n```\n\n### Proper (Recommended)\n```python\n# Register custom YAML constructor before loading config\nimport yaml\n\ndef custom_macro_constructor(loader, node):\n    # Define how to handle !!custom_macro tags\n    return yaml.compose_node(loader, node)\n\nyaml.add_constructor('!custom_macro', custom_macro_constructor)\n\n# Now safely load config\nwith open('config.yaml') as f:\n    config = yaml.safe_load(f)\n```\n\n### Validation Steps\n1. Check `config.yaml` for `!!custom_macro` or other custom YAML tags\n2. Verify all custom constructors are registered in the application startup\n3. Test with `python -c \"import yaml; yaml.safe_load(open('config.yaml'))\"`\n4. Review release notes for v2.1.0 - custom tag support changes\n\n## Action Items\n- [ ] Inspect `config.yaml` for custom tags\n- [ ] Register missing YAML constructors or update config\n- [ ] Restart application\n- [ ] Monitor logs for success",
+    "rule_scores": {
+      "has_root_cause": true,
+      "keyword_coverage": 0.6,
+      "has_fix_suggestion": true,
+      "appropriate_length": true,
+      "overall_pass": true
+    },
+    "judge_scores": {
+      "accuracy": 5,
+      "completeness": 5,
+      "actionability": 4,
+      "clarity": 5,
+      "reasoning": "The assistant accurately identified the root cause (unregistered YAML custom tag), provided comprehensive likely causes and solutions at both quick-fix and proper implementation levels, and structured the response with clear sections and actionable steps; the only minor limitation is that the recommended Python fix uses yaml.compose_node which may not be the most practical implementation detail for all scenarios.",
+      "overall": 5
+    }
+  }
+]

@@ -1,0 +1,184 @@
+Utilizing generative AI to predict housing prices based on historical market data - using regression models or supervised learning algorithms.
+
+Applying generative AI for financial analysis to forecast stock market trends - Techniques such as Long Short-Term Memory (LSTM) networks or ARIMA models are commonly used for these tasks.
+
+Classifying medical images to detect anomalies or diagnose diseases using generative AI - discriminative models designed for classification and detection, such as Convolutional Neural Networks (CNNs). 
+
+Linear regression - Linear regression refers to supervised learning models that, based on one or more inputs, predict a value from a continuous scale. 
+
+Neural network - a more complex supervised learning technique.
+
+Document classification - This is an example of semi-supervised learning. 
+
+Association rule learning - This is an example of unsupervised learning. 
+
+Clustering - Clustering is an unsupervised learning technique that groups certain data inputs, so they may be categorized as a whole.
+
+The company should use Provisioned Throughput mode, which allows the company to reserve a specific amount of capacity in advance - for predictable workload.
+
+The company should opt for on-demand pricing, which allows it to pay only for the actual usage of resources without any long-term commitments - For experimenting
+
+No Spot/Reserved in Amazon SageMaker.
+
+Amazon SageMaker Clarify provides tools to help explain how machine learning (ML) models make predictions.
+
+Top K represents the number of most likely candidates that the model considers for the next token.
+
+Temperature is a value between 0 and 1, and it regulates the creativity of the model's responses.
+
+Top P represents the percentage of most likely candidates that the model considers for the next token. 
+
+Stop sequences specify the sequences of characters that stop the model from generating further tokens.
+
+Instructions, Context, Input data, Output Indicator - Good prompt
+
+Continued pre-training uses unlabeled data to pre-train a model, whereas, fine-tuning uses labeled data to train a model
+
+Exploratory Data Analysis (EDA) phase, which involves examining the data through statistical summaries and visualizations to identify patterns
+
+Hyperparameters are external configurations set before the training process begins. Examples include the learning rate, the number of layers in a neural network, etc.
+
+Amazon Kendra is a highly accurate and easy-to-use enterprise search service, from data from manuals, research reports, FAQs, human resources (HR) documentation, and customer service guides, which may be found across various systems such as Amazon Simple Storage Service (S3), Microsoft SharePoint, Salesforce, ServiceNow, RDS databases, or Microsoft OneDrive.
+
+Amazon Textract is a machine learning (ML) service that automatically extracts text, handwriting, layout elements, and data from scanned documents.
+
+Amazon SageMaker Data Wrangler reduces the time it takes to aggregate and prepare tabular and image data for ML from weeks to minutes. 
+
+Amazon Comprehend is a natural language processing (NLP) service that uses machine learning to find meaning and insights in text.
+
+Amazon Lex is the AWS service used to build conversational interfaces for applications using voice and text.
+
+Amazon Polly is used to deploy high-quality, natural-sounding human voices in dozens of languages
+
+Amazon Rekognition - detect license plate numbers for the vehicles
+
+Asynchronous inference - to process smaller payloads without requiring real-time responses by queuing the requests and handling them in the background. ideal for scenarios where the payload size is less than 1 GB and immediate results are not critical.
+
+Batch inference is generally used for processing large datasets all at once. While it does not require immediate responses.
+
+Real-time inference is optimized for scenarios where low latency is essential, and responses are needed immediately.
+
+Serverless inference is a good choice for workloads with unpredictable traffic or sporadic requests.
+
+BLEU (Bilingual Evaluation Understudy) score, a metric specifically designed to evaluate the quality of text that has been machine-translated by comparing it with one or more reference translations, best for tanslations
+
+ROUGE is a metric used mainly for evaluating the quality of automatic text summarization by measuring the overlap of n-grams, word sequences, and word pairs between machine-generated and reference summaries. 
+
+BERT score is a more advanced metric that uses contextual embeddings to assess the semantic similarity between translated and reference texts, it is less established than BLEU score for evaluating translation tasks.
+
+Each Availability Zone (AZ) consists of one or more discrete data centers.
+Each AWS Region consists of a minimum of three Availability Zones (AZ).
+
+Model evaluation is the process of evaluating and comparing model outputs to determine the model that is best suited for a use case, whereas, model inference is the process of a model generating an output (response) from a given input (prompt)
+
+Amazon SageMaker Ground Truth - To train a machine learning model, you need a large, high-quality, labeled dataset.
+
+Confusion matrix - used for classification problems to show how many predictions were correct and where the model made mistakes. It compares actual classes vs predicted classes. Example: For an email spam classifier
+
+Root Mean Squared Error (RMSE) - is used in regression problems to measure how far predictions are from actual values, giving more weight to large errors. Lower RMSE means better prediction accuracy for continuous values. Example: Predicting house prices
+
+Mean Absolute Error (MAE) - also used for regression, measuring the average absolute difference between predicted and actual values. It treats all errors equally, unlike RMSE which penalizes large errors more. Example: Predicting daily temperatures
+
+Correlation matrix - measures the statistical correlation between different variables or features in a dataset, typically used to understand the relationships between continuous variables. A correlation matrix is not designed to evaluate the performance of a classification model.
+
+Amazon Q develop helps in - 
+Understand and manage your cloud infrastructure on AWS
+Get answers to your AWS account-specific cost-related questions using natural language
+
+To fine-tuning the chatbot’s behavior via prompt engineering.- The company should iteratively test and adjust the chatbot prompts to ensure that its outputs consistently reflect the company's tone and style
+
+AWS Audit Manager helps automate the collection of evidence to continuously audit your AWS usage.
+
+AWS CloudTrail records AWS API calls for auditing purposes and delivers log files for compliance and operational troubleshooting.
+
+In AWS Bedrock, You can use a customized model only in the Provisioned Throughput mode.
+
+Response length represents the minimum or maximum number of tokens to return in the generated response.
+
+Self-supervised learning - works when models are provided vast amounts of raw, almost entirely, or completely unlabeled data and then generate the labels themselves.
+
+Validation sets are optional
+Test set is used to determine how well the model generalizes
+
+Amazon Q Business supports IAM Identity Center instances.
+
+In supervised learning, you train the model with a set of input data and a corresponding set of paired labeled output data. 
+
+Unsupervised machine learning is when you give the algorithm input data without any labeled output data. Then, on its own, the algorithm identifies patterns and relationships in and between the data. 
+
+Self-supervised learning is a machine learning approach that applies unsupervised learning methods to tasks usually requiring supervised learning. Instead of using labeled datasets for guidance, self-supervised models create implicit labels from unstructured data.
+
+Fine-tuning changes the weights of the FM whereas Retrieval-augmented generation (RAG) does not change the weights of the FM
+
+The company should use a multi-modal embedding model, which is designed to represent and align different types of data (such as text and images) in a shared embedding space, allowing the chatbot to understand and interpret both forms of input simultaneously
+
+The company should use an optimized small language model (SLM) deployed directly on the edge device, allowing for real-time, low-latency inference. Deploying the model directly on the edge device eliminates the need for network communication with a central server, thereby achieving the required low-latency inference needed for real-time IoT applications.
+
+Convolutional Neural Networks (CNNs) are specifically designed for processing and classifying image data. They use convolutional layers to automatically and adaptively learn spatial hierarchies of features from input images, making them highly effective for tasks such as image recognition and classification.
+
+Recurrent Neural Networks (RNNs) - Recurrent Neural Networks (RNNs) are typically used for sequence data, such as time series or natural language processing tasks. RNNs are not the best fit for image classification.
+
+Generative Adversarial Networks (GANs) - Generative Adversarial Networks (GANs) are used for generating new data that resembles the training data, such as creating realistic images, but are not specifically designed for image classification.
+
+Training is the process of teaching a machine learning model to recognize patterns by adjusting its internal parameters based on a labeled dataset. During training, the model learns from data by minimizing errors and improving accuracy.
+
+Validation is a step used to evaluate and fine-tune the model during the training process by checking its performance on a validation dataset, which is separate from the training dataset. 
+
+Testing - where model performance is assessed on an unseen test dataset after the training and validation phases are complete. It provides an unbiased estimate of the model’s generalization ability to new data. 
+
+Inference, where the model uses its trained parameters to generate a prediction or output based on new input data provided by the user
+
+Clustering, Dimensionality reduction - unsupervised learning
+
+The company's data is not used to improve the base Foundation Models (FMs) and it is not shared with any model providers
+
+Leverage human evaluation to assess the quality of summaries
+
+it is possible to increase both bias and variance, but this typically leads to a model that performs poorly due to both underfitting and overfitting
+
+Precision, Recall, and F1-Score are standard performance metrics used to evaluate the effectiveness of a classification system
+
+Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and R-squared are metrics used to evaluate regression models
+
+The training set is used for training the model, the validation set is used for tuning hyperparameters and model selection, and the test set is used for evaluating the final model performance
+
+K-Means is an unsupervised learning algorithm used for clustering data points into groups, while KNN is a supervised learning algorithm used for classifying data points based on their proximity to labeled examples
+
+Amazon Q Business - assistant that you can configure to answer questions, provide summaries, generate content, and complete tasks based on your enterprise data. also helps streamline tasks and accelerate problem-solving. 
+
+Amazon Q Developer assists developers and IT professionals with all their tasks—from coding, testing, and upgrading applications, to diagnosing errors, performing security scanning and fixes, and optimizing AWS resources.
+
+Amazon Q in QuickSight - customers get a generative BI assistant
+
+Amazon Connect - is the contact center service from AWS.
+
+Implement dynamic prompt engineering to customize responses based on user characteristics like age
+
+The company should use Accuracy, which measures the proportion of correctly predicted instances (both true positives and true negatives) out of the total number of instances
+
+Multi-class classification assigns each instance to one of several possible classes, while multi-label classification assigns each instance to one or more classes
+
+Amazon Comprehend ML capabilities can be used to detect and redact personally identifiable information (PII) in customer emails, support tickets, product reviews, social media, and more.
+
+A BERT-based model (Bidirectional Encoder Representations from Transformers) is specifically designed for understanding the context of words in a sentence.BERT uses deep learning techniques to predict missing words by considering the words before and after the gap.
+
+Large Language Models (LLMs) are non-deterministic, which implies that the generated text may be different for every user that uses the same prompt.
+
+AWS DeepRacer is the fastest way to get rolling with reinforcement learning (RL).
+
+The company should use object detection, which involves identifying and locating specific objects within an image(for detecting animals in forest)
+
+Amazon SageMaker Automatic Model Tuning (AMT) - None(No paramter is required to manual set)
+
+The AWS DeepRacer vehicle is a Wi-Fi enabled, physical vehicle that can drive itself on a physical track
+
+Amazon Augmented AI (A2I) - support human reviews and audits for its ML model predictions.
+
+Residual Neural Network (ResNet) is a deep neural network architecture used mainly in computer vision tasks
+
+WaveNet is a deep generative model created by DeepMind to synthesize audio data, particularly for generating realistic-sounding speech.
+
+#######################
+The transformer-based generative AI model builds upon the encoder and decoder concepts of VAEs(Variational autoencoders). Transformer-based models add more layers to the encoder to improve performance on text-based tasks like comprehension, translation, and creative writing. Transformer-based models use a self-attention mechanism. They weigh the importance of different parts of an input sequence when processing each element in the sequence. Diffusion models are not a type of transformer-based models.
+
+Generative Adversarial Networks (GANs) work by training two neural networks in a competitive manner. GANs work by training two neural networks in a competitive manner. The first network, known as the generator, generates fake data samples by adding random noise. The second network called the discriminator, tries to distinguish between real data and the fake data produced by the generator.

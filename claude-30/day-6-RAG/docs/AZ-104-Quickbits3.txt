@@ -1,0 +1,82 @@
+Attendance:
+https://rms-new.netlify.app/third_party?batch_header=234002
+Course material:
+https://www.mykoenig.com/
+234002
+Labs:
+https://gsi.learnondemand.net/
+
+Test5 - All questions covered
+Test6 - All questions covered
+
+Access:
+- Resource Policy Contributor role allows a user to create, edit, and manage Azure Policy definitions and initiatives.
+- Security Admin role focuses on managing security-related configurations, alerts, and recommendations, such as Defender for Cloud settings.
+-  Azure role-based access control (Azure RBAC), including roles like Storage File Data SMB Share Reader, can only be assigned to users, groups, service principals, and managed identities in Microsoft Entra ID. Computer accounts are not valid principals for Azure RBAC role assignments.
+- User2 is a cloud-only user created directly in Microsoft Entra ID (formerly Azure Active Directory) and not synchronized from the on-premises Active Directory. The storage account storage1 is configured to use Active Directory (AD) for Azure Files identity-based authentication ("directoryServiceOptions": "AD"), which requires that the security principal (such as a user) must be synchronized from on-premises Active Directory and have a valid SID (security identifier) associated with it.
+- Co-administrator role can only be assigned at the subscription level.
+- To assign Microsoft Entra User1 the Storage File Data SMB Share Contributor role for share1. First configure Access control (IAM) for share1.
+
+Administration:
+- ARM templates - dependsOn: resourceId('Microsoft/VMs', VM1)
+- ARM templates - storageProfile: ImageReference ['publisher': WinServer]
+- Azure alert rate limits - Emails(100/hour) - SMS(1 per 5 mins) - Voice(1 per 5 mins)
+- AzCopy is a cross-platform command-line utility available for Windows, Linux, and macOS.
+- In Bicep file, By configuring the scope property, you direct the deployment of storage1 specifically to RG1. 
+- Standard SKU with a static allocation is correct because it is required to support host scaling and advanced features such as file upload and download when implementing Azure Bastion. 
+- Azure availability sets can be spread across up to 3 fault domains by default. 
+- Azure Availability Sets support up to 20 update domains by default.
+- Performance Monitor and creating a Data Collector Set (DCS) on Windows Server allows you to collect performance metrics, such as CPU, memory, and disk usage, but it does not capture or inspect network traffic between VMs.
+- Closed alert can be changed to New and Acknowledged.
+- Similarly New alert can be changed to Acknowledged and closed.
+- New-AzResourceGroupDeployment -TemplateUri "https://contoso.com/template1" -TemplateParameterfile prams.json )resourceGroupName RG1 -Mode Complete
+This for removing all resources and creating new resources in RG1 
+- New-AzSubscriptionDeployment -Location westus -TemplateFile deploy.json
+the -Location westus argument only defines the deployment metadata region, not the region of the resources being deployed.
+
+Entra:
+
+
+Analytics:
+
+
+Backup:
+- Azure file share in storage1 is eligible for backup by the Recovery Services vault. Blobs are not supported for backup in a Recovery Services vault.
+- Restore VM1 by using the Create new restore configuration option is correct because it allows you to recover VM1 to a previous state from eight days ago without affecting the existing VM. This approach minimizes downtime as it creates a new VM instance based on the backup from eight days ago, enabling you to test and verify the restored version separately before making it live if needed.
+- VM1 is a Windows Server virtual machine that uses Azure Disk Encryption and is intended to be backed up using a Recovery Services vault. According to Azure backup support policies, Standard policy types in Recovery Services vaults fully support backing up Windows VMs with Azure Disk Encryption enabled. 
+- Azure supports backing up Linux virtual machines with Trusted Launch when using Enhanced policies in Recovery Services vaults. Enhanced policies are specifically designed to support advanced VM security configurations like Trusted Launch, and they offer features such as backup of selected disks and multiple backups per day.
+- Multi-User Authorization (MAU) in a Recovery Services vault requires creating a resource guard.
+- Azure blob container/Azure Disks can only be backed up in Azure Backup.
+- Azure files, VMs can only be backed up to Azure Recovery Services Vault.
+- Allow Azure services on the trusted services list to access this storage account and enable it - For Azure Backup to backup disks here.
+- StandardV2 supports blob-level tiering. So individual blob can have different tiers.
+- Simply having the role of Global Admin does not allow the user access to file share data in storage account.
+-  Azure Storage supports customer-managed keys (CMK) for encryption using RSA keys only, and those keys must have a key size of 2048, 3072, or 4096 bits. 
+
+Compute:
+- To verify a custom domain for an Azure web app, you first need to create a TXT record with the name asuid in the DNS zone of your domain.
+- Azure Container Apps or Azure App Service provide built-in autoscaling capabilities. 
+- Azure Container Instances does not have built-in autoscaling.
+- Azure Virtual Machine Scale Sets (VMSS) automatically distribute VM instances across fault and update domains to provide high availability. By default, VMSS placement groups are configured with 5 fault domains and 5 update domains, and update domains are updated one at a time during planned Azure maintenance.
+- The Remote Desktop Connection client (mstsc.exe) cannot be used to connect to VM1 through Bastion1 because Bastion1 is deployed using the Basic SKU, and the Basic SKU does not support native client access.
+- when you enable the admin user for an Azure container registry, Azure provides the registry name itself as the username.
+- For container app, minimum /23 CIDR range, which requires at least 512 IP addresses.
+- Azure Standard Load Balancers require a Standard SKU public IP address with a Static assignment.
+
+Network:
+- Route table can be associated with Subnet only, not to NIC.
+- 1 service endpoint for 2 storage accounts deployed in the same region. Apart from this, the service endpoint is not needed for Azure AD.
+- For the Basic Load Balancer SKU, all virtual machines in the backend pool must be in the same availability set or virtual machine scale set.
+- Azure Firewall premium requires Standard SKU public IP addresses, and only supports Static IPv4 public IP addresses. Tier can be regional/global.
+- Even though VNET2 is also linked to the Azure private DNS zone contoso.com, that zone will not be queried by VMs in VNET2. Why? Because Azure Private DNS only applies if the VNet is configured to use the Azure-provided DNS. Since VNET2 is overridden to use the custom DNS server, all queries (like server1.contoso.com) go to VM4’s DNS instead.
+- Azure app service WebApp with VNet1 integration needs a dedicated subnet and NSG1 is already attached to Subnet1 with VM1, so NSG1 has no control over the traffic reaching to WebApp1.
+
+Storage:
+- daysAfterModificationGreaterThan specifies the condition to move blobs that have not been modified within the specified period (45 days, in this case) to the Cool access tier.
+- Encryption scopes in Azure Storage are applicable to Azure Blob Storage. Since blobs are stored within containers, encryption scopes can be used to encrypt containers, but not other storage types such as file shares, tables, or queues.
+- General Purpose v2 storage, which supports both Azure file shares and tiering.
+- StorageV2 (general purpose v2) offers the most versatile functionality, supporting blobs, files, queues, and tables. This storage type is the recommended choice when planned changes may require flexibility in storage capabilities, as it supports all three access tiers (Hot, Cool, and Archive) and integrates with advanced features, such as lifecycle management and storage tiering.
+- SMB Multichannel is only supported on Premium File Shares, which use SSD-based storage.
+- To minimize the network costs of accessing storage account, modify the default routing tier setting.
+- After storage account creation, you can modify the Encryption type setting.
+- Allow storage account key access is disabled, meaning that any SAS signed with the account keys (such as an Account SAS or a Service SAS) cannot be used. However, a User Delegation SAS is signed with a user delegation key that is derived from the user’s Microsoft Entra ID credentials, not from the storage account keys.

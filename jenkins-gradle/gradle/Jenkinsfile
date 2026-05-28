@@ -1,0 +1,32 @@
+pipeline {
+    agent any // Use any available agent (machine/container)
+
+    stages {
+        stage('Clean Workspace') { // Optional: clean the workspace before a build
+            steps {
+                deleteDir()
+            }
+        }
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from the repository
+                checkout scm
+            }
+        }
+        stage('Build & Test') {
+            steps {
+                // Use the Gradle Wrapper to execute clean and build tasks
+                sh './gradlew clean build' // For Unix/Linux agents
+                // For Windows agents, use bat 'gradlew.bat clean build'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Build successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}

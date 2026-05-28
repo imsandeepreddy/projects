@@ -1,0 +1,44 @@
+// ------ Declarative pipline ------------------------
+// ------ directly provide content in app repo Jenkinsfile
+pipeline {
+    agent none
+    stages {
+        stage('Clean Workspace') {
+            agent { label 'linux-build'}
+            steps{
+                deleteDir()
+            }            
+        }
+        stage("Git checkout") {
+            agent { label 'linux-build'}
+            steps{
+                checkout scm
+                sh '''
+                    ls -ltr
+                    cd path/to/blah
+                '''
+            }
+        }
+    }
+}
+
+// --------- Scripted pipline -------------------------
+// ----- Content in jekins-scripted-repo/vars/main.groovy file
+node('linux-build') {
+    stage('Build') {
+        checkout scm
+        sh 'mvn clean install'
+        stash name: 'app-binaries', includes: 'target/*.jar' 
+    }
+
+node('linux-test') {
+    stage('Test') {
+        deleteDir()
+        unstash 'app-binaries' // Pulls the build files to the new node
+        sh 'mvn test'
+    }
+}
+
+// ------ app-repo/Jenkinsfile content
+@Library(scripted-library) _
+main

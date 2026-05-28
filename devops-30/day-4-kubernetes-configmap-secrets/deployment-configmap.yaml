@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp-container
+        image: myapp:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        
+        # METHOD 1: Injecting key-value pairs as Environment Variables
+        envFrom:
+        - configMapRef:
+            name: myapp-config
+
+        # METHOD 2: Mounting ConfigMap keys as local files inside the container
+        #volumeMounts:
+        #- name: config-volume
+        #  mountPath: /app/config
+        #  readOnly: true
+
+      # Declaring the underlying volume source bound to the ConfigMap
+      #volumes:
+      #- name: config-volume
+      #  configMap:
+      #    name: myapp-config

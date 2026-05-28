@@ -1,0 +1,72 @@
+[
+  {
+    "id": "test_001",
+    "log_content": "2024-01-15 14:23:01 ERROR ConnectionRefusedError: port 5432\n2024-01-15 14:23:02 ERROR Database connection failed after 3 retries",
+    "expected_root_cause": "database connection failure",
+    "expected_fix_keywords": ["postgres", "port", "connection", "database"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_002",
+    "log_content": "2024-01-15 09:11:44 WARN Memory usage at 94%\n2024-01-15 09:11:55 ERROR OOMKilled: container exceeded memory limit",
+    "expected_root_cause": "memory exhaustion",
+    "expected_fix_keywords": ["memory", "limit", "OOM", "resources"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_003",
+    "log_content": "2024-01-15 10:05:12 ERROR TokenExpired: JWT token signature has expired\n2024-01-15 10:05:12 WARN Auth middleware rejected request with status 401",
+    "expected_root_cause": "expired authentication token",
+    "expected_fix_keywords": ["jwt", "token", "expire", "auth", "login"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_004",
+    "log_content": "2024-01-15 11:45:22 WARN Disk space low on /var/log (98% used)\n2024-01-15 11:46:01 CRITICAL IOError: [Errno 28] No space left on device",
+    "expected_root_cause": "disk space exhaustion",
+    "expected_fix_keywords": ["disk", "space", "storage", "cleanup", "clear"],
+    "difficulty": "easy"
+  },
+  {
+    "id": "test_005",
+    "log_content": "2024-01-15 12:20:00 INFO Outbound API call to https://payment.com\n2024-01-15 12:20:30 ERROR TimeoutError: Request timed out after 30000ms\n2024-01-15 12:20:30 ERROR Payment gateway unavailable",
+    "expected_root_cause": "third-party api timeout",
+    "expected_fix_keywords": ["timeout", "gateway", "api", "payment", "network"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "test_006",
+    "log_content": "2024-01-15 13:10:05 ERROR InternalServerError: null value in column \"user_id\" violates not-null constraint\n2024-01-15 13:10:05 ERROR Failed to execute query: INSERT INTO profiles (bio) VALUES ('hello')",
+    "expected_root_cause": "database schema constraint violation",
+    "expected_fix_keywords": ["constraint", "null", "missing", "column", "parameter"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "test_007",
+    "log_content": "2024-01-15 15:40:11 INFO Starting file processing daemon\n2024-01-15 15:40:12 ERROR AccessDeniedException: User arn:aws:iam::123456789012:user/worker is not authorized to perform: s3:GetObject on resource: arn:aws:s3:::app-data/config.json",
+    "expected_root_cause": "insufficient cloud permission policies",
+    "expected_fix_keywords": ["iam", "s3", "permission", "policy", "authorize", "aws"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "test_008",
+    "log_content": "2024-01-15 16:02:44 ERROR DNS resolution failed for microservice-b.internal.local\n2024-01-15 16:02:45 ERROR Cannot route traffic to downstream service",
+    "expected_root_cause": "internal dns resolution failure",
+    "expected_fix_keywords": ["dns", "resolve", "host", "network", "kube-dns"],
+    "difficulty": "medium"
+  },
+  {
+    "id": "test_009",
+    "log_content": "2024-01-15 17:15:30 DEBUG Thread-42 acquired lock on Resource_A\n2024-01-15 17:15:31 DEBUG Thread-89 acquired lock on Resource_B\n2024-01-15 17:15:35 WARN Thread-42 waiting for lock on Resource_B\n2024-01-15 17:15:36 WARN Thread-89 waiting for lock on Resource_A\n2024-01-15 17:17:00 CRITICAL System watchdog triggered: execution pool deadlocked",
+    "expected_root_cause": "thread deadlock on concurrent resources",
+    "expected_fix_keywords": ["deadlock", "thread", "lock", "concurrency", "timeout"],
+    "difficulty": "hard"
+  },
+  {
+    "id": "test_010",
+    "log_content": "2024-01-15 18:50:21 INFO Worker initialized with configuration v2.1.0\n2024-01-15 18:50:22 ERROR PyYAML: constructor exception: could not determine a constructor for the tag '!!custom_macro'\n2024-01-15 18:50:22 CRITICAL Application failed to parse config.yaml, aborting startup",
+    "expected_root_cause": "malformed configuration syntax",
+    "expected_fix_keywords": ["yaml", "config", "parse", "syntax", "invalid"],
+    "difficulty": "hard"
+  }
+]

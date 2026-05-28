@@ -1,0 +1,41 @@
+2026-05-19 18:40:01,112 [INFO] [main] com.app.service.ServerBootstrap: Initializing connection pool with max_size=50
+2026-05-19 18:40:02,455 [INFO] [main] com.app.service.ServerBootstrap: Application started successfully on port 8080
+2026-05-19 18:41:15,221 [INFO] [worker-1] com.app.handler.RequestHandler: Received inbound request ID: req_99182a
+2026-05-19 18:41:15,340 [INFO] [worker-1] com.app.handler.RequestHandler: Request req_99182a processed successfully in 119ms
+2026-05-19 18:42:00,001 [INFO] [scheduler-1] com.app.cron.CleanupTask: Running scheduled database cleanup routine
+2026-05-19 18:42:01,890 [INFO] [scheduler-1] com.app.cron.CleanupTask: Cleanup complete. Removed 142 expired user sessions
+2026-05-19 18:43:10,551 [INFO] [worker-3] com.app.handler.RequestHandler: Received inbound request ID: req_99182b
+2026-05-19 18:44:33,010 [WARN] [monitor-thread] com.app.metrics.SystemMonitor: Memory usage threshold exceeded: 86% JVM Heap utilized
+2026-05-19 18:44:35,112 [INFO] [worker-2] com.app.handler.RequestHandler: Received inbound request ID: req_99182c
+2026-05-19 18:44:35,501 [INFO] [worker-2] com.app.handler.RequestHandler: Request req_99182c processed successfully in 389ms
+2026-05-19 18:45:02,993 [WARN] [monitor-thread] com.app.metrics.SystemMonitor: Memory usage critical: 94% JVM Heap utilized. Triggering emergency GC
+2026-05-19 18:45:10,005 [INFO] [worker-4] com.app.handler.RequestHandler: Received inbound request ID: req_99182d
+2026-05-19 18:45:12,118 [ERROR] [worker-4] com.app.db.DatabaseConnection: Failed to acquire JDBC connection from pool
+java.sql.SQLTransientConnectionException: Connection pool timeout window expired
+    at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:218)
+    at com.zaxxer.hikari.pool.HikariPool.getConnection(HikariPool.java:145)
+    at com.app.db.DatabaseConnection.execute(DatabaseConnection.java:42)
+    at com.app.handler.RequestHandler.run(RequestHandler.java:88)
+2026-05-19 18:45:12,120 [ERROR] [worker-5] com.app.handler.RequestHandler: Thread abruptly terminated during processing of req_99182e
+java.lang.OutOfMemoryError: Java heap space
+    at java.base/java.util.Arrays.copyOf(Arrays.java:3512)
+    at java.base/java.io.ByteArrayOutputStream.grow(ByteArrayOutputStream.java:118)
+    at java.base/java.io.ByteArrayOutputStream.ensureCapacity(ByteArrayOutputStream.java:93)
+    at java.base/java.io.ByteArrayOutputStream.write(ByteArrayOutputStream.java:153)
+    at com.app.service.DataProcessor.cachePayload(DataProcessor.java:210)
+    at com.app.handler.RequestHandler.run(RequestHandler.java:92)
+2026-05-19 18:45:12,205 [INFO] [worker-6] com.app.handler.RequestHandler: Received inbound request ID: req_99182f
+2026-05-19 18:45:12,250 [ERROR] [worker-6] com.app.client.ExternalServiceClient: Remote dependency subsystem unavailable
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: remote-api.service.internal/10.0.4.12:443
+Caused by: java.net.ConnectException: Connection refused
+    at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+    at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+    at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:946)
+    at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:337)
+    at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+2026-05-19 18:45:12,411 [WARN] [main] com.app.service.ServerBootstrap: Health check endpoint reporting degraded state: DOWN
+2026-05-19 18:45:13,999 [FATAL] [kernel] os.linux.oom_killer: Out of memory: Kill process 14208 (java) score 922 or sacrifice child
+2026-05-19 18:46:40,119 [INFO] [main] com.app.service.ServerBootstrap: Initializing connection pool with max_size=50
+2026-05-19 18:46:41,200 [INFO] [main] com.app.service.ServerBootstrap: Application started successfully on port 8080
+2026-05-19 18:47:05,441 [INFO] [worker-1] com.app.handler.RequestHandler: Received inbound request ID: req_99183a
+2026-05-19 18:47:05,612 [INFO] [worker-1] com.app.handler.RequestHandler: Request req_99183a processed successfully in 171ms

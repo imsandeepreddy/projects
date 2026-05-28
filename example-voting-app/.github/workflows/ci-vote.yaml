@@ -1,0 +1,50 @@
+name: Build vote app and push to docker
+
+on:
+  push:
+    branches:
+      - 'feature'
+    paths:
+      - 'vote/**'
+      - '.github/workflows/ci-vote.yaml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set variables
+        id: vars
+        run: |
+          # Get branch name and short hash
+          BRANCH=${GITHUB_REF_NAME}
+          SHA_SHORT=$(echo ${GITHUB_SHA} | cut -c1-5)
+
+          # save output for use in another steps
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "sha_short=$SHA_SHORT" >> $GITHUB_OUTPUT
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build docker image and push to docker hub
+        uses: docker/build-push-action@v6
+        with:
+          context: ./vote
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/vote:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}
+      - name: Update image in k8s file
+        run: |
+          # Target the specific file in your k8s-specification folder
+          sed -i "s|image: .*vote.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/vote:${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}|g" k8s-specifications/vote-deployment.yaml
+          
+          # Git commit and push
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add k8s-specifications/vote-deployment.yaml
+          git commit -m "Update vote image to ${{ steps.vars.outputs.branch }}-${{ steps.vars.outputs.sha_short }}"
+          git push
