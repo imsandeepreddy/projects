@@ -5,7 +5,7 @@ Bash scripting some essential commands and concepts.
 - **If-else statement:**
 
    ```bash
-   if [ condition ]; then
+   if [[ condition ]]; then
        # code to be executed if the condition is true
    else
        # code to be executed if the condition is false
@@ -33,7 +33,7 @@ Bash scripting some essential commands and concepts.
 - **While Loop:**
 
    ```bash
-   while [ condition ]; do
+   while [[ condition ]]; do
        # code to be executed
    done
    ```
@@ -59,7 +59,7 @@ Bash scripting some essential commands and concepts.
 - **Checking if a File Exists:**
 
    ```bash
-   if [ -e "filename" ]; then
+   if [[ -e "filename" ]]; then
        # code to be executed
    fi
    ```
@@ -67,7 +67,7 @@ Bash scripting some essential commands and concepts.
 - **Checking if a Directory Exists:**
 
    ```bash
-   if [ -d "directory" ]; then
+   if [[ -d "directory" ]]; then
        # code to be executed
    fi
    ```
@@ -103,7 +103,7 @@ echo "Hello, $name!"
 
 read -p "Enter a number: " num
 
-if [ $num -gt 10 ]; then
+if [[ $num -gt 10 ]]; then
     echo "The number is greater than 10."
 else
     echo "The number is 10 or less."
@@ -128,7 +128,7 @@ ROTATE_DAYS=7
 DATE_FORMAT="%Y%m%d"
 
 # Check if the log directory exists
-if [ ! -d "$LOG_DIR" ]; then
+if [[ ! -d "$LOG_DIR" ]]; then
     echo "Error: Log directory does not exist."
     exit 1
 fi

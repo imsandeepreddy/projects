@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Accept a URL as $1 and max retries as $2
 #Use a while loop with a counter
 #Hit the URL with curl -sf — check the exit code

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eou pipefail
 #Accept a directory path as an argument: $1
