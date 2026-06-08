@@ -1,6 +1,3 @@
-<!-- header -->
-<div align="center">
-
 ```
 sandeep@cloud:~/projects$ ls -la
 ```
@@ -13,8 +10,6 @@ sandeep@cloud:~/projects$ ls -la
 [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=flat-square&logo=twitter&logoColor=white)](https://twitter.com/urssanny)
 [![Homepage](https://img.shields.io/badge/backtothecloud.com-%2363e6be.svg?style=flat-square&logo=github&logoColor=black)](https://imsandeepreddy.github.io)
 [![Newsletter](https://img.shields.io/badge/newsletter-beehiiv-%23ffd43b.svg?style=flat-square)](https://backtothecloud.com)
-
-</div>
 
 ---
 
@@ -66,6 +61,4 @@ $ whoami
 
 ---
 
-<div align="center">
-  <sub>// more experiments incoming · star if useful · PRs welcome</sub>
-</div>
+*// more experiments incoming · star if useful · PRs welcome*
